@@ -12,19 +12,19 @@
 void HCMS2902_GenerateClock(DisplayCommConf *comm)
 {
     // Generate clock by setting low, high then low
-    comm->clk_clear();
+    comm->clk.clear();
     Utils_Delay_100ns(comm->delay);
-    comm->clk_set();
+    comm->clk.set();
     Utils_Delay_100ns(comm->delay);
-    comm->clk_clear();
+    comm->clk.clear();
 }
 
 void HCMS2902_GenerateInit(DisplayCommConf *comm)
 {
     // Init sequence of signals
-    comm->ce_set();
-    comm->clk_clear();
-    comm->din_clear();
+    comm->ce.set();
+    comm->clk.clear();
+    comm->din.clear();
 }
 
 void HCMS2902_Write(DisplayCommConf *comm, char reg)
@@ -36,14 +36,14 @@ void HCMS2902_Write(DisplayCommConf *comm, char reg)
     {
         // Send MSB bit
         if (reg & HCMS2901_MSB_MASK)
-            comm->din_set();
+            comm->din.set();
         else
-            comm->din_clear();
+            comm->din.clear();
         // Generate clock and shift register
         HCMS2902_GenerateClock(comm);
         reg <<= 1;
     }
-    comm->din_clear();
+    comm->din.clear();
 }
 
 void HCMS2902_WriteArray(DisplayCommConf *comm, char a, char b, char c, char d, char e)
@@ -66,19 +66,19 @@ void HCMS2902_WriteArray(DisplayCommConf *comm, char a, char b, char c, char d, 
 void HCMS2902_WriteREG0(DisplayCommConf *comm, char reg)
 {
     // Register selection : Reg0
-    comm->rs_set();
+    comm->rs.set();
     Utils_Delay_100ns(comm->delay);
     // Send register
-    comm->ce_clear();
+    comm->ce.clear();
     Utils_Delay_100ns(comm->delay);
     HCMS2902_Write(comm, reg);
-    comm->ce_set(); 
+    comm->ce.set(); 
     Utils_Delay_100ns(comm->delay);
     // Clears clock
-    comm->clk_clear();
+    comm->clk.clear();
     Utils_Delay_100ns(comm->delay);
     // Register selection : Normal 
-    comm->rs_clear();
+    comm->rs.clear();
 }
 
 void HCMS2902_WriteBrightness(DisplayCommConf *comm, unsigned char val)
@@ -148,18 +148,18 @@ void HCMS2902_WriteText(DisplayCommConf *comm, char* text)
 {
     unsigned char i;
     // Register selection : Normal
-    comm->rs_clear();
+    comm->rs.clear();
     Utils_Delay_100ns(comm->delay);
     // Send text (char by char)
-    comm->ce_clear();
+    comm->ce.clear();
     Utils_Delay_100ns(comm->delay);
     for (i = 0 ; i < HCMS2902_NUM_DIGITS; i++)
         HCMS2902_WriteChar(comm, text[i]);
-    comm->ce_set();
+    comm->ce.set();
     Utils_Delay_100ns(comm->delay);
     // Clear clock
-    comm->clk_clear();
+    comm->clk.clear();
     Utils_Delay_100ns(comm->delay);
     // Clear data in
-    comm->din_clear();
+    comm->din.clear();
 }
