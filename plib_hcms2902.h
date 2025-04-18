@@ -10,8 +10,8 @@
  * @copyright Copyright (c) 2025
  */
 
-#include "libs/util/plibs_utils.h"  // used for DisplayCommConf struct
- 
+#include "plib_hcms2902_comm.h"
+
 /** @brief Valeur maximale de luminosité de l'afficheur */
 #define HCMS2902_LIGHT_MAX    15
 /** @brief Valeur minimale de luminosité de l'afficheur */

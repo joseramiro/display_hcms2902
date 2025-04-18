@@ -10,7 +10,8 @@
  * @copyright Copyright (c) 2025
  */
 
-#include "libs/util/plibs_utils.h"  // used for delays
+#include "libs/common_c_libs/plib_delay.h"
+#include "libs/common_c_libs/plib_comm_struct.h"
 
 /** @brief Nombre de chiffres dans display */
 #define HCMS2902_NUM_DIGITS             4
@@ -22,6 +23,15 @@
 #define HCMS2901_MSB_MASK               0x80
 /** @brief Masque pour configuration de la luminosité */
 #define HCMS2901_BRIGHTNESS_MASK        0x40
+
+typedef struct
+{
+    unsigned long delay;    /**< Délai entre chaque transition de pins */
+    GPIOPin_t ce;
+    GPIOPin_t din;
+    GPIOPin_t clk;
+    GPIOPin_t rs;
+}DisplayCommConf;
 
 /**
  * @brief Génère une impulsion d'horloge pour la communication.
