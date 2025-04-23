@@ -27,10 +27,10 @@
 typedef struct
 {
     unsigned long delay;    /**< Délai entre chaque transition de pins */
-    GPIOPin_t ce;
-    GPIOPin_t din;
-    GPIOPin_t clk;
-    GPIOPin_t rs;
+    GPIO_t ce;
+    GPIO_t din;
+    GPIO_t clk;
+    GPIO_t rs;
 }DisplayCommConf;
 
 /**
