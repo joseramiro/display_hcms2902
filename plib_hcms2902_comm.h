@@ -5,8 +5,8 @@
  * @file plib_hcms2902_comm.h
  * @brief Bibliothèque de communication pour l'afficheur HCMS-2902
  * @author Ramiro Najera
- * @version 1.0
- * @date 2025-03-18
+ * @version 1.0.0
+ * @date 2025-04-23
  * @copyright Copyright (c) 2025
  */
 
@@ -24,33 +24,42 @@
 /** @brief Masque pour configuration de la luminosité */
 #define HCMS2901_BRIGHTNESS_MASK        0x40
 
+/**
+ * @struct HCMS2902Comm_t
+ * @brief Communication série de l'afficheur HCMS2902
+ */
 typedef struct
 {
-    unsigned long delay;    /**< Délai entre chaque transition de pins */
-    GPIO_t ce;
+    /** @brief Délai de transition entre chaque pin */
+    unsigned long delay;
+    /** @brief Pin Chip Enable */
+    GPIO_t ce; 
+    /** @brief Pin Data In */             
     GPIO_t din;
+    /** @brief Pin Clock */
     GPIO_t clk;
+    /** @brief Pin Register Selection */
     GPIO_t rs;
-}DisplayCommConf;
+}HCMS2902Comm_t;
 
 /**
  * @brief Génère une impulsion d'horloge pour la communication.
  * @param comm Pointeur vers la structure de configuration de la communication.
  */
-void HCMS2902_GenerateClock(DisplayCommConf *comm);
+void HCMS2902_GenerateClock(HCMS2902Comm_t *comm);
 
 /**
  * @brief Initialise la communication avec l'afficheur HCMS-2902.
  * @param comm Pointeur vers la structure de configuration de la communication.
  */
-void HCMS2902_GenerateInit(DisplayCommConf *comm);
+void HCMS2902_GenerateInit(HCMS2902Comm_t *comm);
 
 /**
  * @brief Envoie un octet de données à l'afficheur via la communication.
  * @param comm Pointeur vers la structure de configuration de la communication.
  * @param reg Octet à envoyer.
  */
-void HCMS2902_Write(DisplayCommConf *comm, char reg);
+void HCMS2902_Write(HCMS2902Comm_t *comm, char reg);
 
 /**
  * @brief Envoie plusieurs octets de données à l'afficheur.
@@ -61,35 +70,34 @@ void HCMS2902_Write(DisplayCommConf *comm, char reg);
  * @param d Quatrième octet.
  * @param e Cinquième octet.
  */
-void HCMS2902_WriteArray(DisplayCommConf *comm, char a, char b, char c, char d, char e);
+void HCMS2902_WriteArray(HCMS2902Comm_t *comm, char a, char b, char c, char d, char e);
 
 /**
  * @brief Écrit une valeur dans le registre 0 de l'afficheur.
  * @param comm Pointeur vers la structure de configuration de la communication.
  * @param reg Valeur à écrire dans le registre 0.
  */
-void HCMS2902_WriteREG0(DisplayCommConf *comm, char reg);
+void HCMS2902_WriteREG0(HCMS2902Comm_t *comm, char reg);
 
 /**
  * @brief Ajuste la luminosité de l'afficheur en envoyant une valeur au registre approprié.
  * @param comm Pointeur vers la structure de configuration de la communication.
  * @param val Niveau de luminosité (0-15).
  */
-void HCMS2902_WriteBrightness(DisplayCommConf *comm, unsigned char val);
+void HCMS2902_WriteBrightness(HCMS2902Comm_t *comm, unsigned char val);
 
 /**
  * @brief Affiche un caractère sur l'afficheur en utilisant la communication.
  * @param comm Pointeur vers la structure de configuration de la communication.
  * @param c Caractère à afficher.
  */
-void HCMS2902_WriteChar(DisplayCommConf *comm, char c);
+void HCMS2902_WriteChar(HCMS2902Comm_t *comm, char c);
 
 /**
  * @brief Affiche une chaîne de caractères sur l'afficheur HCMS-2902.
  * @param comm Pointeur vers la structure de configuration de la communication.
  * @param text Pointeur vers la chaîne de caractères à afficher.
  */
-void HCMS2902_WriteText(DisplayCommConf *comm, char* text);
-
+void HCMS2902_WriteText(HCMS2902Comm_t *comm, char* text);
 
 #endif  // PLIB_HCMS2902_COMM_H

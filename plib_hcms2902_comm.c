@@ -2,14 +2,14 @@
  * @file plib_hcms2902_comm.c
  * @brief Bibliothèque de communication pour l'afficheur HCMS-2902
  * @author Ramiro Najera
- * @version 1.0
- * @date 2025-03-18
+ * @version 1.0.0
+ * @date 2025-04-23
  * @copyright Copyright (c) 2025
  */
 
 #include "plib_hcms2902_comm.h"
 
-void HCMS2902_GenerateClock(DisplayCommConf *comm)
+void HCMS2902_GenerateClock(HCMS2902Comm_t *comm)
 {
     // Generate clock by setting low, high then low
     comm->clk.clear();
@@ -19,7 +19,7 @@ void HCMS2902_GenerateClock(DisplayCommConf *comm)
     comm->clk.clear();
 }
 
-void HCMS2902_GenerateInit(DisplayCommConf *comm)
+void HCMS2902_GenerateInit(HCMS2902Comm_t *comm)
 {
     // Init sequence of signals
     comm->ce.set();
@@ -27,7 +27,7 @@ void HCMS2902_GenerateInit(DisplayCommConf *comm)
     comm->din.clear();
 }
 
-void HCMS2902_Write(DisplayCommConf *comm, char reg)
+void HCMS2902_Write(HCMS2902Comm_t *comm, char reg)
 {
     unsigned char i;
 
@@ -46,7 +46,7 @@ void HCMS2902_Write(DisplayCommConf *comm, char reg)
     comm->din.clear();
 }
 
-void HCMS2902_WriteArray(DisplayCommConf *comm, char a, char b, char c, char d, char e)
+void HCMS2902_WriteArray(HCMS2902Comm_t *comm, char a, char b, char c, char d, char e)
 {
     unsigned char i;
     char tempArray[HCMS2902_NUM_COLUMNS];
@@ -63,7 +63,7 @@ void HCMS2902_WriteArray(DisplayCommConf *comm, char a, char b, char c, char d, 
         HCMS2902_Write(comm, tempArray[i]);
 }
 
-void HCMS2902_WriteREG0(DisplayCommConf *comm, char reg)
+void HCMS2902_WriteREG0(HCMS2902Comm_t *comm, char reg)
 {
     // Register selection : Reg0
     comm->rs.set();
@@ -81,12 +81,12 @@ void HCMS2902_WriteREG0(DisplayCommConf *comm, char reg)
     comm->rs.clear();
 }
 
-void HCMS2902_WriteBrightness(DisplayCommConf *comm, unsigned char val)
+void HCMS2902_WriteBrightness(HCMS2902Comm_t *comm, unsigned char val)
 {
     HCMS2902_WriteREG0(comm, (HCMS2901_BRIGHTNESS_MASK + val));
 }
 
-void HCMS2902_WriteChar(DisplayCommConf *comm, char c)
+void HCMS2902_WriteChar(HCMS2902Comm_t *comm, char c)
 {
     switch (c)
     {
@@ -144,7 +144,7 @@ void HCMS2902_WriteChar(DisplayCommConf *comm, char c)
     }
 }
 
-void HCMS2902_WriteText(DisplayCommConf *comm, char* text)
+void HCMS2902_WriteText(HCMS2902Comm_t *comm, char* text)
 {
     unsigned char i;
     // Register selection : Normal
