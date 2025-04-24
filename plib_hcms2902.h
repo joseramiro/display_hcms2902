@@ -33,20 +33,20 @@ typedef struct
 
 /**
  * @brief Initialise l'afficheur HCMS-2902 avec la configuration spécifiée.
- * @param conf Pointeur vers la structure de configuration de l'afficheur.
+ * @param obj Pointeur vers la structure de configuration de l'afficheur.
  */
 void HCMS2902_Init(HCMS2902_t *obj);
 
 /**
  * @brief Met à jour la luminosité de l'afficheur HCMS-2902.
- * @param conf Pointeur vers la structure de configuration de l'afficheur.
+ * @param obj Pointeur vers la structure de configuration de l'afficheur.
  * @param val Nouvelle valeur de luminosité (0-15).
  */
 void HCMS2902_UpdateBrightness(HCMS2902_t *obj, unsigned char val);
 
 /**
  * @brief Met à jour le texte affiché sur l'afficheur HCMS-2902.
- * @param conf Pointeur vers la structure de configuration de l'afficheur.
+ * @param obj Pointeur vers la structure de configuration de l'afficheur.
  * @param text Pointeur vers la chaîne de caractères à afficher.
  */
 void HCMS2902_UpdateText(HCMS2902_t *obj, char* text);
