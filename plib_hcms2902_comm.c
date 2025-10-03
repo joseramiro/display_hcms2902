@@ -2,7 +2,7 @@
  * @file plib_hcms2902_comm.c
  * @brief Bibliothèque de communication pour l'afficheur HCMS-2902
  * @author Ramiro Najera
- * @version 1.0.0
+ * @version 1.0.1
  * @date 2025-04-23
  * @copyright Copyright (c) 2025
  */
@@ -12,73 +12,62 @@
 void HCMS2902_GenerateClock(HCMS2902Comm_t *comm)
 {
     // Generate clock by setting low, high then low
-    comm->clk.clear();
-    Wait_100ns(comm->delay);
-    comm->clk.set();
-    Wait_100ns(comm->delay);
-    comm->clk.clear();
+    comm->pinCLK.Clear();
+    Wait100ns(comm->delay);
+    comm->pinCLK.Set();
+    Wait100ns(comm->delay);
+    comm->pinCLK.Clear();
 }
 
 void HCMS2902_GenerateInit(HCMS2902Comm_t *comm)
 {
     // Init sequence of signals
-    comm->ce.set();
-    comm->clk.clear();
-    comm->din.clear();
+    comm->pinCE.Set();
+    comm->pinCLK.Clear();
+    comm->pinDIN.Clear();
 }
 
 void HCMS2902_Write(HCMS2902Comm_t *comm, char reg)
 {
-    unsigned char i;
-
     // Send each dot of column
-    for (i = 0; i < HCMS2902_NUM_DOTS_IN_COLUMN; i++)
+    for (unsigned char i = 0; i < HCMS2902_NUM_DOTS_IN_COLUMN; i++)
     {
         // Send MSB bit
         if (reg & HCMS2901_MSB_MASK)
-            comm->din.set();
+            comm->pinDIN.Set();
         else
-            comm->din.clear();
+            comm->pinDIN.Clear();
         // Generate clock and shift register
         HCMS2902_GenerateClock(comm);
         reg <<= 1;
     }
-    comm->din.clear();
+    comm->pinDIN.Clear();
 }
 
 void HCMS2902_WriteArray(HCMS2902Comm_t *comm, char a, char b, char c, char d, char e)
 {
-    unsigned char i;
-    char tempArray[HCMS2902_NUM_COLUMNS];
-
-    // Set temp array with input chars
-    tempArray[0] = a;
-    tempArray[1] = b;
-    tempArray[2] = c;
-    tempArray[3] = d;
-    tempArray[4] = e;
-
+    char tempArray[HCMS2902_NUM_COLUMNS] = {a, b, c, d, e};
     // Send each colomn of digit
-    for (i = 0 ; i < HCMS2902_NUM_COLUMNS; i++)
+    for (unsigned char i = 0 ; i < HCMS2902_NUM_COLUMNS; i++)
         HCMS2902_Write(comm, tempArray[i]);
 }
 
 void HCMS2902_WriteREG0(HCMS2902Comm_t *comm, char reg)
 {
     // Register selection : Reg0
-    comm->rs.set();
-    Wait_100ns(comm->delay);
+    comm->pinRS.Set();
+    Wait100ns(comm->delay);
     // Send register
-    comm->ce.clear();
-    Wait_100ns(comm->delay);
+    comm->pinCE.Clear();
+    Wait100ns(comm->delay);
     HCMS2902_Write(comm, reg);
-    comm->ce.set(); 
-    Wait_100ns(comm->delay);
+    comm->pinCE.Set(); 
+    Wait100ns(comm->delay);
     // Clears clock
-    comm->clk.clear();
-    Wait_100ns(comm->delay);
+    comm->pinCLK.Clear();
+    Wait100ns(comm->delay);
     // Register selection : Normal 
-    comm->rs.clear();
+    comm->pinRS.Clear();
 }
 
 void HCMS2902_WriteBrightness(HCMS2902Comm_t *comm, unsigned char val)
@@ -146,20 +135,19 @@ void HCMS2902_WriteChar(HCMS2902Comm_t *comm, char c)
 
 void HCMS2902_WriteText(HCMS2902Comm_t *comm, char* text)
 {
-    unsigned char i;
     // Register selection : Normal
-    comm->rs.clear();
-    Wait_100ns(comm->delay);
+    comm->pinRS.Clear();
+    Wait100ns(comm->delay);
     // Send text (char by char)
-    comm->ce.clear();
-    Wait_100ns(comm->delay);
-    for (i = 0 ; i < HCMS2902_NUM_DIGITS; i++)
+    comm->pinCE.Clear();
+    Wait100ns(comm->delay);
+    for (unsigned char i = 0 ; i < HCMS2902_NUM_DIGITS; i++)
         HCMS2902_WriteChar(comm, text[i]);
-    comm->ce.set();
-    Wait_100ns(comm->delay);
+    comm->pinCE.Set();
+    Wait100ns(comm->delay);
     // Clear clock
-    comm->clk.clear();
-    Wait_100ns(comm->delay);
+    comm->pinCLK.Clear();
+    Wait100ns(comm->delay);
     // Clear data in
-    comm->din.clear();
+    comm->pinDIN.Clear();
 }

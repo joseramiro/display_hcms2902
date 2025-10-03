@@ -2,7 +2,7 @@
  * @file plib_hcms2902.c
  * @brief Bibliothèque de l'afficheur HCMS-2902
  * @author Ramiro Najera
- * @version 1.0.0
+ * @version 1.0.1
  * @date 2025-04-23
  * @copyright Copyright (c) 2025
  */

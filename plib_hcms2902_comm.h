@@ -5,7 +5,7 @@
  * @file plib_hcms2902_comm.h
  * @brief Bibliothèque de communication pour l'afficheur HCMS-2902
  * @author Ramiro Najera
- * @version 1.0.0
+ * @version 1.0.1
  * @date 2025-04-23
  * @copyright Copyright (c) 2025
  */
@@ -33,13 +33,13 @@ typedef struct
     /** @brief Délai de transition entre chaque pin */
     unsigned long delay;
     /** @brief Pin Chip Enable */
-    GPIO_t ce; 
+    GPIO_t pinCE; 
     /** @brief Pin Data In */             
-    GPIO_t din;
+    GPIO_t pinDIN;
     /** @brief Pin Clock */
-    GPIO_t clk;
+    GPIO_t pinCLK;
     /** @brief Pin Register Selection */
-    GPIO_t rs;
+    GPIO_t pinRS;
 }HCMS2902Comm_t;
 
 /**
